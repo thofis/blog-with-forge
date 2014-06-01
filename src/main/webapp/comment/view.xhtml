@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{commentBean.id}"/>
+		<f:event type="preRenderView" listener="#{commentBean.retrieve}"/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="View Comment"/>
+
+	<ui:define name="header">
+		Comment
+	</ui:define>
+
+	<ui:define name="subheader">
+		View existing Comment
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:panelGrid columnClasses="label,component,required" columns="3">
+			<h:outputLabel for="commentBeanCommentOriginator" value="Originator:"/>
+			<h:outputText id="commentBeanCommentOriginator" value="#{commentBean.comment.originator}"/>
+			<h:outputText/>
+			<h:outputLabel for="commentBeanCommentCreatedAt" value="Created At:"/>
+			<h:outputText id="commentBeanCommentCreatedAt" value="#{commentBean.comment.createdAt}">
+				<f:convertDateTime type="date"/>
+			</h:outputText>
+			<h:outputText/>
+			<h:outputLabel for="commentBeanCommentContent" value="Content:"/>
+			<h:outputText id="commentBeanCommentContent" value="#{commentBean.comment.content}"/>
+			<h:outputText/>
+			<h:outputLabel for="commentBeanCommentBlogEntry" value="Blog Entry:"/>
+			<h:link id="commentBeanCommentBlogEntry" outcome="/blogEntry/view" value="#{commentBean.comment.blogEntry}">
+				<f:param name="id" value="#{commentBean.comment.blogEntry.id}"/>
+			</h:link>
+			<h:outputText/>
+		</h:panelGrid>
+
+		<div class="buttons">
+			<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
+			<h:link value="Edit" outcome="create" includeViewParams="true" styleClass="btn btn-primary"/>
+			<h:link value="Create New" outcome="create" styleClass="btn btn-primary"/>
+		</div>
+	</ui:define>
+
+</ui:composition>

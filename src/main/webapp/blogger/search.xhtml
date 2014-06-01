@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value="#{bloggerBean.page}"/>
+		<f:event type="preRenderView" listener="#{bloggerBean.paginate}"/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Blogger entities"/>
+
+	<ui:define name="header">
+		Blogger
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Blogger entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="bloggerBeanExampleFirstName" value="First Name:"/>
+						<h:panelGroup>
+							<h:inputText id="bloggerBeanExampleFirstName" maxLength="2147483647" value="#{bloggerBean.example.firstName}"/>
+							<h:message for="bloggerBeanExampleFirstName" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="bloggerBeanExampleLastName" value="Last Name:"/>
+						<h:panelGroup>
+							<h:inputText id="bloggerBeanExampleLastName" maxLength="2147483647" value="#{bloggerBean.example.lastName}"/>
+							<h:message for="bloggerBeanExampleLastName" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action="#{bloggerBean.search}" styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action="#{bloggerBean.create}" styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="bloggerBeanPageItems" styleClass="data-table" value="#{bloggerBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="First Name"/>
+					</f:facet>
+					<h:link outcome="/blogger/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemFirstName" value="#{_item.firstName}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Last Name"/>
+					</f:facet>
+					<h:link outcome="/blogger/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemLastName" value="#{_item.lastName}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value="#{bloggerBean}"/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>

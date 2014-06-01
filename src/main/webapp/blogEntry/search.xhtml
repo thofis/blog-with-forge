@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value="#{blogEntryBean.page}"/>
+		<f:event type="preRenderView" listener="#{blogEntryBean.paginate}"/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Blog Entry entities"/>
+
+	<ui:define name="header">
+		Blog Entry
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Blog Entry entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="blogEntryBeanExampleTitle" value="Title:"/>
+						<h:panelGroup>
+							<h:inputText id="blogEntryBeanExampleTitle" value="#{blogEntryBean.example.title}"/>
+							<h:message for="blogEntryBeanExampleTitle" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="blogEntryBeanExampleContent" value="Content:"/>
+						<h:panelGroup>
+							<h:inputText id="blogEntryBeanExampleContent" value="#{blogEntryBean.example.content}"/>
+							<h:message for="blogEntryBeanExampleContent" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="blogEntryBeanExampleBlogger" value="Blogger:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{bloggerBean.converter}" id="blogEntryBeanExampleBlogger" value="#{blogEntryBean.example.blogger}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{bloggerBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="blogEntryBeanExampleBlogger" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action="#{blogEntryBean.search}" styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action="#{blogEntryBean.create}" styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="blogEntryBeanPageItems" styleClass="data-table" value="#{blogEntryBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Title"/>
+					</f:facet>
+					<h:link outcome="/blogEntry/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemTitle" value="#{_item.title}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Content"/>
+					</f:facet>
+					<h:link outcome="/blogEntry/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemContent" value="#{_item.content}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Created At"/>
+					</f:facet>
+					<h:link outcome="/blogEntry/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemCreatedAt" value="#{_item.createdAt}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Blogger"/>
+					</f:facet>
+					<h:link outcome="/blogEntry/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="forgeviewdisplayitemBlogger" value="#{forgeview:display(_item.blogger)}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value="#{blogEntryBean}"/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>
